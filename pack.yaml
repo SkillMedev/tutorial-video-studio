@@ -1,0 +1,45 @@
+# Confirm against Skill Me's pack-ingest schema before wiring to ingest.
+#
+# Fields below are derived from PACK.md (## Pack metadata + the ordered member
+# table). The authoritative pack-ingest schema is owned by Skill Me and was not
+# provided; do not add fields beyond these without confirming that schema.
+
+name: Tutorial & Demo Video Studio
+slug: tutorial-video-studio
+category: design   # cross-listed candidate: coding (Remotion members)
+description: >-
+  Make a narrated tutorial or product demo end to end — plan the beats, record a
+  clean screencast, script and pace the voiceover, direct the on-screen action,
+  apply motion and on-screen labels, score and mix the audio, generate accurate
+  captions, and render and reframe for delivery. Install when someone wants to
+  produce a how-to video, feature walkthrough, onboarding clip, or release demo
+  and needs the whole pipeline rather than one piece.
+
+# Members in pipeline order. tier: core = spine of any narrated tutorial;
+# optional = pulled in for animated/recreated-UI segments or social delivery.
+skills:
+  - slug: video-storyboard
+    tier: core
+  - slug: screencast-capture
+    tier: core
+  - slug: narration-script
+    tier: core
+  - slug: product-demo-director
+    tier: core
+  - slug: motion-design-principles
+    tier: optional
+  - slug: kinetic-typography
+    tier: core
+  - slug: remotion-setup
+    tier: optional
+  - slug: remotion-compose
+    tier: optional
+  - slug: sound-and-music-sync
+    tier: core
+  - slug: captions-from-transcript
+    tier: core
+  - slug: remotion-render
+    tier: optional
+  - slug: social-video-formatter
+    tier: optional
+  # - slug: motion-color-and-light   # optional; include for the full motion-craft set (ID did not surface via search)
