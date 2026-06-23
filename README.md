@@ -1,135 +1,33 @@
 # Tutorial & Demo Video Studio
 
-A first-party [Skill Me](https://skillme.dev) pack: a complete, end-to-end
-pipeline for making a **narrated tutorial or product demo** — from beat sheet to
-captioned export. It is assembled almost entirely from skills already in the
-catalog, with **three new first-party skills** filling the tutorial-specific gaps
-the existing (marketing-demo-flavored) suite didn't cover.
+**Make a narrated tutorial or product demo end to end — plan the beats, record a clean screencast, script the voiceover, direct the action, caption it, and render for delivery.** — built in-house by [Skill&nbsp;Me](https://skillme.dev).
 
-Each skill is a `SKILL.md` file: YAML frontmatter (`name` + a trigger-precise
-`description`) followed by an imperative Markdown body. Skill Me ingests these
-into its catalog; a pack is a curated, ordered bundle of them.
+A complete, capture-led pipeline for a narrated tutorial or product demo, assembled almost entirely from the catalog's existing video suite plus three new first-party skills that filled the tutorial-specific gaps: Screencast Capture (record clean raw footage), Narration Script (write the spoken voiceover, synced one-instruction-per-action), and Captions From Transcript (accurate, timed SRT/VTT). Read top to bottom it is the whole workflow — storyboard the beats, capture, narrate, direct the cursor and zoom, set type and motion, mix sound, caption, render, and reframe for social. Install when someone wants to produce a how-to video, feature walkthrough, onboarding clip, or release demo and needs the whole pipeline rather than one piece.
 
-## The 12-skill pipeline
+⭐ **If this is useful, star the repo** — it's how we gauge what to build next.
 
-Install the pack and you get the workflow top to bottom. **core** = the spine of
-any narrated tutorial; **optional** = pulled in for animated / recreated-UI
-segments or social delivery.
+## Install
 
-| # | Skill | slug | Tier | Role in pipeline |
-|---|-------|------|------|------------------|
-| 1 | Video Storyboard | `video-storyboard` | core | Plan beats → JSON scene plan |
-| 2 | Screencast Capture | `screencast-capture` | core | **(new)** Record clean raw footage |
-| 3 | Narration Script | `narration-script` | core | **(new)** Write the spoken VO, synced to actions |
-| 4 | Product Demo Director | `product-demo-director` | core | Direct cursor / zoom / callouts |
-| 5 | Motion Design Principles | `motion-design-principles` | optional | Easing/timing craft for animated bits |
-| 6 | Kinetic Typography | `kinetic-typography` | core | On-screen labels, lower-thirds, callouts |
-| 7 | Remotion Setup | `remotion-setup` | optional | Scaffold a Remotion project (intros / recreated UI) |
-| 8 | Remotion Compose | `remotion-compose` | optional | Author animated compositions |
-| 9 | Sound and Music Sync | `sound-and-music-sync` | core | Mix VO, duck music, land SFX |
-| 10 | Captions From Transcript | `captions-from-transcript` | core | **(new)** Accurate, timed SRT/VTT |
-| 11 | Remotion Render | `remotion-render` | optional | Export MP4 / iterate / batch |
-| 12 | Social Video Formatter | `social-video-formatter` | optional | Reframe + burn-in captions per platform |
+- **From the catalog:** [skillme.dev/pack/tutorial-video-studio](https://skillme.dev/pack/tutorial-video-studio) — install the whole pack into Claude in one step.
+- **With the skills CLI:** `npx skills add aouellets/tutorial-video-studio`
+- **Manually:** copy any `skills/<slug>/SKILL.md` into your Claude skills directory.
 
-> `motion-color-and-light` exists in the catalog but its ID did not surface via
-> search. The pack manifest and migration resolve members **by slug**, so it can
-> be added as an optional 13th member without blocking anything — it is left
-> commented out in both [`pack.yaml`](pack.yaml) and the migration.
+## Skills in this pack
 
-## The three new skills
-
-The existing video suite is excellent but was built for **marketing / launch
-videos** (storyboard → Remotion → motion craft → social reframe). A *tutorial*
-has three needs that suite didn't cover. These three live in this repo, under
-[`skills/`](skills/):
-
-1. **[Screencast Capture](skills/screencast-capture/SKILL.md)** — the actual
-   *act* of recording clean footage (recorder choice, fps/cursor/mic, a
-   distraction-free stage, retakeable segments). `product-demo-director` directs
-   what's on screen but assumes you already have footage; capture is the biggest
-   hole for tutorials.
-2. **[Narration Script](skills/narration-script/SKILL.md)** — writes the *words*
-   of the voiceover, synced one-instruction-per-action and paced to a budget.
-   `sound-and-music-sync` mixes and paces audio but doesn't write the script.
-3. **[Captions From Transcript](skills/captions-from-transcript/SKILL.md)** —
-   generates an *accurate, timed* caption track (SRT/VTT) from audio.
-   `social-video-formatter` burns in and styles captions but presumes a track
-   already exists.
-
-All three use non-overlapping trigger language with explicit `Do NOT use when…`
-cross-references, matching the suite's existing discipline so there is no
-ambiguity at invocation time.
-
-## Install (via the Skill Me MCP server)
-
-Skill Me is claude.ai-native: you install skills and packs by talking to its
-**MCP server**, and they load into your session as agent context.
-
-1. **Connect the Skill Me MCP server** in claude.ai (Settings → Connectors). The
-   catalog and connection details live at [skillme.dev](https://skillme.dev).
-2. **Install the pack.** Ask Claude to install it, or call the
-   **`install_pack`** tool with this pack's slug, `tutorial-video-studio`. To
-   add a single member instead, use **`install_skill`** with that skill's slug.
-3. **Load it into the session.** **`get_active_skills`** runs at the start of a
-   session and loads everything you've installed so the skills apply for the
-   whole conversation. (Browse first with **`browse_packs`** / **`browse_skills`**,
-   review your library with **`list_installed`**, and remove with
-   **`uninstall_skill`**.)
-
-This repo is **catalog content only** — `SKILL.md` files, a pack manifest, and a
-seed migration. It does not import from or modify the live MCP server or its tool
-signatures.
-
-## Repository layout
-
-```
-tutorial-video-studio/
-├── README.md
-├── LICENSE                         # MIT
-├── pack.yaml                       # pack manifest (slug-keyed, ordered, tiered)
-├── skills/
-│   ├── screencast-capture/SKILL.md
-│   ├── narration-script/SKILL.md
-│   └── captions-from-transcript/SKILL.md
-├── migrations/
-│   └── 0001_tutorial_video_studio_pack.sql   # slug-resolved, idempotent seed
-├── CONTRIBUTING.md                 # how to add/modify a skill; the trigger-precision bar
-├── scripts/
-│   └── validate-skills.mjs         # structural validator (gray-matter only)
-└── .github/workflows/validate.yml  # runs the validator on push / PR
-```
-
-## Validate
-
-```bash
-npm install      # installs gray-matter, the only dependency
-npm run validate # node scripts/validate-skills.mjs
-```
-
-The validator hard-fails on missing `name`/`description`, an empty body, a
-missing H1, placeholder tokens, or a directory name that doesn't match the
-kebab-case of the skill's `name`. It warns (without failing) when a description
-is under 12 words or lacks a trigger cue. CI runs it on every push and PR.
-
-## Open questions (for wiring into ingest)
-
-`pack.yaml` and the migration encode best-effort assumptions; confirm these
-against Skill Me's real ingest before wiring them in:
-
-1. **Pack-ingest manifest schema** — what fields/format does the catalog expect
-   for a pack? `pack.yaml` carries only `name`, `slug`, `category`,
-   `description`, and an ordered `skills: [{slug, tier}]` list, plus a
-   schema-confirmation comment.
-2. **Skill body storage** — does ingest read `SKILL.md` from the repo at ingest
-   time, or expect the body in a DB column? This decides whether the migration
-   needs a body payload.
-3. **Real Supabase table/column names** for `packs` / `skills` / the pack–skill
-   join, so the migration's assumed DDL header can be made exact.
-4. **One pack or two** — ship this single broad pack (core/optional tiers) now,
-   or split a capture-led *Tutorial* pack from a Remotion-led *Product Video
-   Studio*. Default is the single broad pack; see the tradeoff section in the
-   pack spec.
+- **[Video Storyboard](skills/video-storyboard/SKILL.md)** — Plan a product demo, feature announcement, or launch video as a beat sheet and shot list BEFORE animating — hook in the first 3s, problem, reveal, proof, CTA — with target duration and pacing per scene type, output as a JSON scene plan that remotion-compose consumes directly.
+- **[Screencast Capture](skills/screencast-capture/SKILL.md)** — Capture clean raw screen and camera footage for a tutorial or product demo — choosing the recorder (macOS Screenshot toolbar, QuickTime, OBS, Windows Game Bar), setting resolution / frame-rate / cursor / microphone, prepping a distraction-free stage, and recording in retakeable segments.
+- **[Narration Script](skills/narration-script/SKILL.md)** — Write the spoken voiceover for a tutorial or demo — the actual words, phrased for the ear and synced one-instruction-per-action to what is on screen, with a pacing budget and a confident, jargon-checked tone.
+- **[Product Demo Director](skills/product-demo-director/SKILL.md)** — Direct the craft of putting a real software UI on screen — cursor choreography, zoom/pan/callout language, screen-recording vs recreated-UI, and making state changes legible with highlights, focus pulls, and slow-downs.
+- **[Motion Design Principles](skills/motion-design-principles/SKILL.md)** — The craft layer for motion: pick the right easing (ease-in / ease-out / ease-in-out / spring), get timing and spacing right, build the anticipationâactionâfollow-through arc, and apply Disney's 12 principles to UI and product video.
+- **[Kinetic Typography](skills/kinetic-typography/SKILL.md)** — Put text in motion the right way — title cards, animated captions, lower-thirds, callouts, and word-by-word reveals — with a reading-time-per-word budget so copy holds long enough to read, plus enter/exit timing, weight and size transitions, and type hierarchy in motion.
+- **[Remotion Setup](skills/remotion-setup/SKILL.md)** — Scaffolds a new Remotion video project wired for Claude Code Agent Skills — Node check, create-video scaffold, skills install, folder conventions, Google Fonts, and a smoke-test render.
+- **[Remotion Compose](skills/remotion-compose/SKILL.md)** — Turns a natural-language video brief into a complete Remotion composition (.tsx) — scene plan plus animated React/TypeScript components using useCurrentFrame, interpolate, spring, AbsoluteFill, and Sequence.
+- **[Sound and Music Sync](skills/sound-and-music-sync/SKILL.md)** — Score a video like an editor: beat-match cuts to the music, land SFX on transitions, pace the voiceover so it breathes, source royalty-free tracks safely, and duck the music so the VO sits clearly on top.
+- **[Captions From Transcript](skills/captions-from-transcript/SKILL.md)** — Produce an accurate, properly timed caption track (SRT or WebVTT) from a video's audio — transcribing or aligning to the voiceover script, timing cues to speech, and enforcing line-length and reading-speed rules so captions are readable and in sync.
+- **[Remotion Render](skills/remotion-render/SKILL.md)** — Renders a Remotion composition to MP4 and runs the iterate loop — CLI render command, 1080p/4K/9:16 presets, --concurrency tuning, surgical edit-and-re-render cycles, batch variants from a JSON data file, and Lambda for cloud rendering.
+- **[Social Video Formatter](skills/social-video-formatter/SKILL.md)** — Reframe and export a finished video for social platforms — 9:16 ↔ 16:9 cropping, burned-in captions, a platform-native first frame, loop design, and per-platform specs (aspect, length, safe areas) for TikTok, Reels, Shorts, X, and LinkedIn.
 
 ## License
 
-[MIT](LICENSE) © 2026 Skill Me / Alexander.
+MIT — see [LICENSE](LICENSE). Skills are portable `SKILL.md` files; the canonical
+copies live in the [Skill&nbsp;Me catalog](https://skillme.dev).
