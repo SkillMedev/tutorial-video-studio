@@ -9,7 +9,7 @@ A complete, capture-led pipeline for a narrated tutorial or product demo, assemb
 ## Install
 
 - **From the catalog:** [skillme.dev/pack/tutorial-video-studio](https://skillme.dev/pack/tutorial-video-studio) — install the whole pack into Claude in one step.
-- **With the skills CLI:** `npx skills add aouellets/tutorial-video-studio`
+- **With the skills CLI:** `npx skills add SkillMedev/tutorial-video-studio`
 - **Manually:** copy any `skills/<slug>/SKILL.md` into your Claude skills directory.
 
 ## Skills in this pack
