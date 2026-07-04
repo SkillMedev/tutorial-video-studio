@@ -18,7 +18,9 @@ including "build a 20-second video showing X."
 Do not start coding until you have these. Ask in one compact batch; fill obvious
 gaps with sensible defaults rather than stalling:
 
-1. **Duration** in seconds, and **fps** (default 30).
+1. **Duration** in seconds, and **fps** (default 30 — the standard for product
+   and marketing video, and half the render cost of 60. Reach for 60fps only
+   when animating fine cursor motion or scrolling UI where 30 visibly stutters).
 2. **Scenes** — what happens, in order. Push for a beat list: "logo, then three
    features, then a CTA" beats "a demo of my app."
 3. **Brand** — primary/accent/background hex colors, and the font (a
@@ -29,6 +31,7 @@ gaps with sensible defaults rather than stalling:
    claims; ask for the real words.
 
 Convert seconds to frames everywhere: `durationInFrames = seconds * fps`.
+Typical total lengths: 15–60s for a social/product demo, 6–15s for an ad cut.
 
 ## Step 2 — Build a scene plan
 
@@ -43,6 +46,15 @@ Total: 20s @ 30fps = 600 frames
   Feature 3           frames 390–540   (Sequence from=390 durationInFrames=150)
   CTA outro           frames 540–600   (Sequence from=540 durationInFrames=60)
 ```
+
+Pacing thresholds while budgeting:
+
+- Give any beat that carries text at least 2 seconds (60 frames at 30fps) —
+  enter animation plus hold. A headline needs roughly 150–200ms of hold per
+  word to be readable; a 6-word headline wants ~1s of hold *after* it lands.
+- Enter animations: 10–20 frames. Cross-fades and exits: 12–15 frames. Longer
+  reads as sluggish, shorter as a glitch.
+- No scene shorter than ~45 frames unless it is a deliberate flash cut.
 
 `<Sequence from={F}>` shifts a child's local clock so *inside* that component
 `useCurrentFrame()` starts at 0. Animate each scene as if it begins at frame 0.
@@ -81,6 +93,10 @@ const pop = spring({ frame, fps, config: { damping: 200 } });   // 0 → 1, live
 const opacity = interpolate(frame, [0, 15], [0, 1], { extrapolateRight: "clamp" });
 const scale = interpolate(pop, [0, 1], [0.8, 1]);
 ```
+
+`damping: 200` is the workhorse config — a quick settle with barely-there
+overshoot. Lower damping (~10–20) bounces visibly; use it only when bounce is
+the point.
 
 ## Step 5 — Standard product-demo structure
 
@@ -223,3 +239,33 @@ Save the finished file to `src/compositions/<VideoName>.tsx`, register it in
 (http://localhost:3000). Then hand off: *"Scrub it in Studio. Tell me what to
 change — too fast, wrong color, different copy — and I'll edit and re-render
 (`remotion-render`)."*
+
+## Do NOT
+
+- Do NOT animate with CSS transitions/animations or `setTimeout`/`setInterval`.
+  Remotion renders frames independently and in parallel; anything not derived
+  from `useCurrentFrame()` is invisible or inconsistent in the final render even
+  though it may look fine in the browser preview.
+- Do NOT use `Math.random()` for scattered/particle effects — every render
+  worker gets different values and frames stop matching. Use Remotion's
+  `random(seed)` for deterministic pseudo-randomness.
+- Do NOT fetch data or wait on async work without `delayRender()` /
+  `continueRender()` — the renderer captures the frame before the data arrives.
+- Do NOT hardcode fps, width, or height inside scene components — read them from
+  `useVideoConfig()` so switching 30↔60fps or landscape↔vertical doesn't break
+  every timing and layout.
+- Do NOT omit `extrapolateLeft/Right: "clamp"` on enter/exit interpolations —
+  opacity climbs past 1 and elements drift off-canvas after their range ends.
+- Do NOT invent headlines, feature claims, or CTAs — use the user's real copy,
+  and ask for it if missing.
+
+## Quality bar
+
+- Every animated value is a pure function of `useCurrentFrame()` (plus props) —
+  scrubbing backwards in Studio looks identical to playing forwards.
+- The frame budget in the plan sums exactly to `durationInFrames` in
+  `Root.tsx`, and no text beat holds for less than its readable minimum.
+- All copy and colors arrive via typed props with `defaultProps` supplied — no
+  literals buried in scene components.
+- Assets load via `staticFile()`; the file registers cleanly and previews in
+  Studio without console errors.
