@@ -1,16 +1,17 @@
 # Tutorial & Demo Video Studio
 
-**Make a narrated tutorial or product demo end to end - plan the beats, record a clean screencast, script the voiceover, direct the action, caption it, and render for delivery.** — built in-house by [Skill&nbsp;Me](https://skillme.dev).
+**Make a narrated tutorial or product demo end to end - plan the beats, record a clean screencast, script the voiceover, direct the action, caption it, and render for delivery.** — built in-house by [Skill&nbsp;Me](https://skillme.dev/?utm_source=github&utm_medium=readme&utm_campaign=pack-tutorial-video-studio).
 
 A complete, capture-led pipeline for a narrated tutorial or product demo, assembled almost entirely from the catalog's existing video suite plus three new first-party skills that filled the tutorial-specific gaps: Screencast Capture (record clean raw footage), Narration Script (write the spoken voiceover, synced one-instruction-per-action), and Captions From Transcript (accurate, timed SRT/VTT). Read top to bottom it is the whole workflow - storyboard the beats, capture, narrate, direct the cursor and zoom, set type and motion, mix sound, caption, render, and reframe for social. Install when someone wants to produce a how-to video, feature walkthrough, onboarding clip, or release demo and needs the whole pipeline rather than one piece.
 
-⭐ **If this is useful, star the repo** — it's how we gauge what to build next.
-
 ## Install
 
-- **From the catalog:** [skillme.dev/pack/tutorial-video-studio](https://skillme.dev/pack/tutorial-video-studio) — install the whole pack into Claude in one step.
+- **Claude, ChatGPT, Codex, Cursor (connector):** [install the whole pack from skillme.dev](https://skillme.dev/pack/tutorial-video-studio?utm_source=github&utm_medium=readme&utm_campaign=pack-tutorial-video-studio) — one connection, then ask for any skill by name.
+- **As files for Codex, Cursor, or Claude Code:** `npx @skillme/cli add video-storyboard screencast-capture narration-script product-demo-director motion-design-principles kinetic-typography remotion-setup remotion-compose sound-and-music-sync captions-from-transcript remotion-render social-video-formatter --target all`
 - **With the skills CLI:** `npx skills add SkillMedev/tutorial-video-studio`
-- **Manually:** copy any `skills/<slug>/SKILL.md` into your Claude skills directory.
+- **Manually:** copy any `skills/<slug>/SKILL.md` into `.agents/skills/`, `.cursor/skills/`, or `.claude/skills/`.
+
+⭐ **If this is useful, star the repo** — it's how we gauge what to build next.
 
 ## Skills in this pack
 
@@ -30,4 +31,4 @@ A complete, capture-led pipeline for a narrated tutorial or product demo, assemb
 ## License
 
 MIT — see [LICENSE](LICENSE). Skills are portable `SKILL.md` files; the canonical
-copies live in the [Skill&nbsp;Me catalog](https://skillme.dev).
+copies live in the [Skill&nbsp;Me catalog](https://skillme.dev/browse?utm_source=github&utm_medium=readme&utm_campaign=pack-tutorial-video-studio).
